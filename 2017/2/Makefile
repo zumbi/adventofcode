@@ -1,0 +1,2 @@
+CFLAGS=-ggdb -Og
+kk:
