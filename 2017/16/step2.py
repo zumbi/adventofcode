@@ -10,7 +10,7 @@ O = sys.stdin.readline()
 O = O[:-1].split(",")
 
 count = 0
-while count != times:
+while count < times:
  ##found a cycle!
  if (count and l == l0):
      times = times % count
