@@ -3,7 +3,7 @@ import sys
 print "#include <stdio.h>"
 print "int main() {"
 for a in range(ord('a'), ord('h')+1):
-    print "int %s = 0;" % chr(a)
+    print "long int %s = 0;" % chr(a)
 
 print "a = 1;"
 idx = -1
