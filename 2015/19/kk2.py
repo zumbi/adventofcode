@@ -19,81 +19,91 @@ def string2n(s):
             i+=1
     return o
 
+def pst(s):
+    out = []
+    for i in s:
+        for j in convert:
+            if convert[j] == i:
+                out +=[j]
+                break
+    return ''.join(out)
+
 
 lines = sys.stdin.readlines()
 changes = dict()
+invert = list()
 for l in lines[:-2]:
     l = l[:-1].split(" => ")
-    if e2n(l[0]) not in changes:
-        changes[e2n(l[0])] = []
-    changes[e2n(l[0])] += [string2n(l[1])]
+    fr = e2n(l[0])
+    to = string2n(l[1])
+    if fr not in changes:
+        changes[fr] = []
+    changes[fr] += [to]
+    invert += [[string2n(l[1]), [e2n(l[0])]]]
 
-end = string2n(lines[-1][:-1])
+start = string2n(lines[-1][:-1])
+end = [e2n("e")]
 
+st = [start,0]
 
-def trans(s):
-    added = True
-    out = [[[s],0]]
-    process = []
-
-    while added:
-        added = False
-        out2 = []
-        l2 = []
-        for o in out:
-            if o[0] not in l2:
-                l2 += [o[0]]
-                out2 += [o]
-            if o[0][0] not in changes:
-                continue
-            if o[0][0] not in process:
-                process += [o[0][0]]
-                added = True
-            for c in changes[o[0][0]]:
-                s2 = c + o[0][1:]
-                if s2 not in l2:
-                    l2 += [s2]
-                    out2 += [[s2,o[1]+1]]
-        out = out2
-
-    print out[1:]
-    return out[1:]
+def find_sub(big,small):
+    out = []
+    for i in range(len(big)-len(small)+1):
+        found = True
+        for j in range(len(small)):
+            if big[i+j]!=small[j]:
+                found = False
+                break;
+        if found:
+            out += [i]
+    return out
 
 
-T = dict()
-for p in changes:
-    T[p] = trans(p)
+def applyc(change,s):
+    i = 0
+    out = []
+    pos = find_sub(s,change[0])
+    l = len(change[0])
+    for p in pos:
+        s1 = s[0:p] + change[1] + s[p+l:]
+        if change[1] == end and len(s1)!=1:
+            continue
+        out += [s1]
+    return out
 
-print T
-print end
+def compare(i1,i2):
+    return len(i1[0]) - len(i2[0])
 
-
-
-st = [[e2n("e")],0,0]
+visited = dict()
+last_len = len(start)
 wq = [st]
-min_n = None
 while len(wq) > 0:
-    [s,i,n] = wq[0]
+    wq = sorted(wq, cmp=compare)
+
+    [s,n] = wq[0]
     wq = wq[1:]
 
-    if len(s) > len(end):
-        continue
+    if len(s) < last_len:
+        print [pst(s),n]
+        print len(s)
+        last_len = len(s)
 
     if s == end:
-        if min_n == None or n<min_n:
-            min_n = n
-            print s
-            print n
+        print s
+        print n
+        break
 
-    w = []
-    for t in T[s[0]]:
-        s1 = s[:i] + t[0] + s[i+1:]
-        for i0 in range(i,min(len(s1),len(end))-1):
-            if s1[i0] != end[i0]:
-                break
-            w += [[s1[:],i0+1,n+t[1]]]
-    wq += w
+    new = []
+    for i in invert:
+        new += applyc(i,s)
+    for c in new:
+        h = str(c)
+        if n+1 >=250:
+            continue
+        if h in visited and visited[h] <= n+1:
+            continue
+        visited[h] = n+1
+        wq += [[c,n+1]]
 
-print min_n
 
 
