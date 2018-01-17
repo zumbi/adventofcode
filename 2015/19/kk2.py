@@ -39,17 +39,24 @@ def trans(s):
     while added:
         added = False
         out2 = []
+        l2 = []
         for o in out:
-            out2 += [o]
+            if o[0] not in l2:
+                l2 += [o[0]]
+                out2 += [o]
             if o[0][0] not in changes:
                 continue
             if o[0][0] not in process:
                 process += [o[0][0]]
                 added = True
             for c in changes[o[0][0]]:
-                out2 += [[c + o[0][1:],o[1]+1]]
+                s2 = c + o[0][1:]
+                if s2 not in l2:
+                    l2 += [s2]
+                    out2 += [[s2,o[1]+1]]
         out = out2
 
+    print out[1:]
     return out[1:]
 
 
