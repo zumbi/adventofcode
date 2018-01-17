@@ -32,6 +32,7 @@ end = string2n(lines[-1][:-1])
 
 
 def trans(s):
+    print s
     todo= [[[s],0]]
     done = []
     out = []
@@ -39,11 +40,23 @@ def trans(s):
         [s,n] = todo[0]
         todo = todo[1:]
 
-        if s[0] not in done:
-            done += [s[0]]
-
         if s[0] not in changes:
             continue
+
+        print [s,done]
+
+        matches = False
+        for text in done:
+            matches = True
+            for n in range(len(text)):
+                if s[n] != text[n]:
+                    matches = False
+                    break
+            if matches:
+                break
+        if matches:
+            continue
+        done += [s[0:2]]
 
         for c in changes[s[0]]:
             s0 = c + s[1:]
@@ -57,10 +70,9 @@ T = dict()
 for p in changes:
     T[p] = trans(p)
 
+print T
 
-#print convert
-#print T[11]
-#print end
+
 
 print end
 
@@ -89,5 +101,6 @@ while len(wq) > 0:
             w += [[s1[:],i0+1,n+t[1]]]
     wq += w
 
+print min_n
 
 
