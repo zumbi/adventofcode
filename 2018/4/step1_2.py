@@ -58,13 +58,23 @@ for t in table:
     for i in range(60):
         work_time[table[t][60]][i] += table[t][i]
 
+#Step 1
 #sum_data
 worker = dict()
 for w in work_time:
     worker[w] = sum(work_time[w])
+
 lacy = max(worker, key=worker.get)
-
 best_min = work_time[lacy].index(max(work_time[lacy]))
+print(lacy * best_min)
 
+#Step 2
+#max_data
+worker = dict()
+for w in work_time:
+    worker[w] = max(work_time[w])
+
+lacy = max(worker, key=worker.get)
+best_min = work_time[lacy].index(max(work_time[lacy]))
 print(lacy * best_min)
 
