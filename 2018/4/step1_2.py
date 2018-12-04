@@ -11,16 +11,11 @@ def date_dt(a):
     if data[0] == "Guard":
         if dt.hour == 23:
             dt += datetime.timedelta(days=1)
-
     return dt
-
-def date_cmp(a,b):
-    c = date_dt(a) - date_dt(b)
-    return int(c.total_seconds())
 
 #Sort lines
 lines = sys.stdin.readlines()
-lines = sorted(lines, cmp=date_cmp)
+lines = sorted(lines, key=date_dt)
 
 
 #Find dates
