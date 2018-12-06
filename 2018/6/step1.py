@@ -25,12 +25,12 @@ for line in range(MAX):
         distances[line*MAX + col] = get_distances([line,col], coords)
 
 def get_min(distance):
-    vals = distance.values()
+    vals = list(distance.values())
     maxs = vals[:]
     maxs.sort()
     if maxs[0] == maxs[1]:
         return None
-    keys = distances[d].keys()
+    keys = list(distances[d].keys())
     return keys[vals.index(maxs[0])]
 
 #get sum of winners
