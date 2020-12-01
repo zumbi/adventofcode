@@ -1,12 +1,16 @@
 import sys
 
-
-def fuel(n):
-    n = n // 3
+fuel_cache = dict()
+def fuel(in_n):
+    if in_n in fuel_cache:
+        return fuel_cache[in_n]
+    n = in_n // 3
     n = max(0, n - 2)
     if n == 0:
-        return 0
-    return n + fuel(n)
+        fuel_cache[in_n] = 0
+    else:
+        fuel_cache[in_n] = n + fuel(n)
+    return fuel_cache[in_n]
 
 
 s = 0
