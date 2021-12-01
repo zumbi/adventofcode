@@ -1,11 +1,30 @@
-import sys
+#! /usr/bin/python3
 
-lines = sys.stdin.readlines()
-numbers = list(map(int, lines))
+def File2Array(file):
+    with open(file) as f:
+        array = []
+        for line in f:
+            array.append([int(x) for x in line.split()])
 
-n_bigger = 0
-for i in range(1, len(numbers)):
-    if numbers[i] > numbers[i - 1]:
-        n_bigger += 1
+    return array
 
-print(n_bigger)
+def CheckIncreasingValues(array):
+    length = len(array)
+    count = 0
+    for i in range (0, length-1):
+        if (array[i] < array[i+1]):
+            count = count + 1;
+
+    return count
+
+if __name__ == "__main__":
+
+    array = File2Array('test_input')
+    num = CheckIncreasingValues(array)
+    # print("[test] Number of increasing values %s" % num)
+    assert num == 7
+
+    array = File2Array('input')
+    num = CheckIncreasingValues(array)
+    print("Number of increasing values %s" % num)
+
